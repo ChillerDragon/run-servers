@@ -37,7 +37,9 @@ start_ddnet_srv() {
 	name="localhost:$port, new ddnet, origins: $origins"
 	if [ "$config" != "" ]
 	then
-		name="$name,$config"
+		local short_config
+		short_config="$(printf '%s' "$config" | sed 's/sv_redirect_on_join/red/' | sed 's/tw-0.7+udp:\/\/127.0.0.1://')"
+		name="$name,$short_config"
 	fi
 	if ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";$config" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
 		pids+=($!)
