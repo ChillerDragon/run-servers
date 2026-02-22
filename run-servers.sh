@@ -146,6 +146,7 @@ start_ddnet_insta_srv port=8309
 start_teeworlds_srv port=8310
 start_ddnet_remote_srv 192.168.178.27 origins='*' port=8303
 start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8304
+start_ddnet_remote_srv 192.168.178.27 origins='*:8303' port=8305
 
 kill_servers() {
 	printf '[*] killing %d servers\n' "${#pids[@]}"
