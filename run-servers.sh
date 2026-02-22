@@ -41,7 +41,7 @@ start_ddnet_srv() {
 		short_config="$(printf '%s' "$config" | sed 's/sv_redirect_on_join/red/' | sed 's/tw-0.7+udp:\/\/127.0.0.1://')"
 		name="$name | $short_config"
 	fi
-	if ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";$config" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
+	if ./DDNet-Server "sv_register 0;sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";$config" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
 		pids+=($!)
 		printf '[*] started server on port %d\n' "$port"
 		popd &> /dev/null
@@ -74,7 +74,7 @@ _start_ddnet_remote_srv() {
 	local slug_origins
 	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/' | sed 's/[^a-z0-9\.]/_/')"
 	name="$remote:$port | new ddnet | origins: $origins"
-	if nohup ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";echo kill-me-daddy" &> /tmp/error.log & then
+	if nohup ./DDNet-Server "sv_register 0;sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";echo kill-me-daddy" &> /tmp/error.log & then
 		printf '[*] started server on host %s with port %d\n' "$remote" "$port"
 		return
 	fi
@@ -103,7 +103,7 @@ start_ddnet_insta_srv() {
 
 	pushd ~/Desktop/git/ddnet-insta/build/ &> /dev/null
 	name="localhost:$port | old ddnet | origins: NULL"
-	if ./DDNet-Server "sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/ddnet_insta_${port}.log" & then
+	if ./DDNet-Server "sv_register 0;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/ddnet_insta_${port}.log" & then
 		pids+=($!)
 		printf '[*] started server on port %d\n' "$port"
 		popd &> /dev/null
@@ -124,7 +124,7 @@ start_teeworlds_srv() {
 	pushd ~/Desktop/git/teeworlds/build/ &> /dev/null
 	local name
 	name="localhost:$port | teeworlds | origins: NULL"
-	if ./teeworlds_srv "sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/teeworlds_${port}.log" & then
+	if ./teeworlds_srv "sv_register 0;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/teeworlds_${port}.log" & then
 		local pid
 		pid="$!"
 		pids+=("$pid")
