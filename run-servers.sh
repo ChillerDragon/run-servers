@@ -132,7 +132,10 @@ kill_servers() {
 	local remote
 	for pid in "${pids[@]}"; do
 		printf '[*] killid pid %d\n' "$pid"
-		kill -9 "$pid"
+		if ! kill -9 "$pid"
+		then
+			printf '[!] WARNING failed to kill pid %d\n' "$pid"
+		fi
 	done
 
 	for remote in "${remote_servers[@]}"; do
