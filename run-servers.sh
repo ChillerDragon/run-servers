@@ -27,7 +27,7 @@ start_ddnet_srv() {
 	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/' | sed 's/[^a-z0-9\.]/_/')"
 	name="localhost:$port, new ddnet, origins: $origins"
 	if ./DDNet-Server "sv_allowed_origins $origins;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
-		pids+=($$)
+		pids+=($!)
 		printf '[*] started server on port %d\n' "$port"
 		popd &> /dev/null
 		return
@@ -89,7 +89,7 @@ start_ddnet_insta_srv() {
 	pushd ~/Desktop/git/ddnet-insta/build/ &> /dev/null
 	name="localhost:$port, old ddnet, origins: NULL"
 	if ./DDNet-Server "sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/ddnet_insta_${port}.log" & then
-		pids+=($$)
+		pids+=($!)
 		printf '[*] started server on port %d\n' "$port"
 		popd &> /dev/null
 		return
@@ -115,7 +115,7 @@ kill_servers() {
 
 	for remote in "${remote_servers[@]}"; do
 		printf '[*] killing servers on remote %s\n' "$remote"
-		ssh "$remote" bash -c 'pkill -f kill-me-daddy'
+		ssh "$remote" 'pkill -f kill-me-daddy'
 	done
 }
 
