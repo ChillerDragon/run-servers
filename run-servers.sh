@@ -26,7 +26,7 @@ start_ddnet_srv() {
 	local slug_origins
 	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/' | sed 's/[^a-z0-9\.]/_/')"
 	name="localhost:$port, new ddnet, origins: $origins"
-	if ./DDNet-Server "sv_allowed_origins $origins;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
+	if ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
 		pids+=($!)
 		printf '[*] started server on port %d\n' "$port"
 		popd &> /dev/null
@@ -59,7 +59,7 @@ _start_ddnet_remote_srv() {
 	local slug_origins
 	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/' | sed 's/[^a-z0-9\.]/_/')"
 	name="$remote:$port, new ddnet, origins: $origins"
-	if nohup ./DDNet-Server "sv_allowed_origins $origins;sv_port $port;sv_name \"$name\";echo kill-me-daddy" &> /tmp/error.log & then
+	if nohup ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\";echo kill-me-daddy" &> /tmp/error.log & then
 		printf '[*] started server on host %s with port %d\n' "$remote" "$port"
 		return
 	fi
