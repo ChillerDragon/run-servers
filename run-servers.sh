@@ -107,10 +107,13 @@ start_teeworlds_srv() {
 	port="$(printf '%s' "$port" | cut -d'=' -f2-)"
 
 	pushd ~/Desktop/git/teeworlds/build/ &> /dev/null
+	local name
 	name="localhost:$port, teeworlds, origins: NULL"
 	if ./teeworlds_srv "sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/teeworlds_${port}.log" & then
-		pids+=($!)
-		printf '[*] started teeworlds server on port %d\n' "$port"
+		local pid
+		pid="$!"
+		pids+=("$pid")
+		printf '[*] started teeworlds server on port %d with pid %d\n' "$port" "$pid"
 		popd &> /dev/null
 		return
 	fi
