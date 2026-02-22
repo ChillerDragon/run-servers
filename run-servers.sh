@@ -102,7 +102,7 @@ start_ddnet_srv origins='*' port=8303
 start_ddnet_srv origins='192.168.178.78:*' port=8304
 start_ddnet_insta_srv port=8305
 start_ddnet_remote_srv 192.168.178.27 origins='*' port=8303
-start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8303
+start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8304
 
 kill_servers() {
 	printf '[*] killing %d servers\n' "${#pids[@]}"
