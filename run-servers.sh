@@ -24,7 +24,7 @@ start_ddnet_srv() {
 
 	pushd ~/Desktop/git/ddnet/build/ &> /dev/null
 	local slug_origins
-	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/' | sed 's/[^a-z0-9\.]/_/')"
+	slug_origins="$(printf '%s' "$origins" | sed 's/*/_WILD_/g' | sed 's/[^a-z0-9\.]/_/g')"
 	name="localhost:$port, new ddnet, origins: $origins"
 	if ./DDNet-Server "sv_allowed_redirect_origins $origins;sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/new_ddnet_${port}_${slug_origins}.log" & then
 		pids+=($!)
@@ -120,8 +120,9 @@ start_teeworlds_srv() {
 
 start_ddnet_srv origins='*' port=8303
 start_ddnet_srv origins='192.168.178.78:*' port=8304
-start_ddnet_insta_srv port=8305
-start_teeworlds_srv port=8306
+start_ddnet_srv origins='tw-0.7+udp://*' port=8305
+start_ddnet_insta_srv port=8306
+start_teeworlds_srv port=8307
 start_ddnet_remote_srv 192.168.178.27 origins='*' port=8303
 start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8304
 
