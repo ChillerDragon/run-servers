@@ -141,8 +141,9 @@ start_ddnet_srv origins='192.168.178.78:*' port=8304
 start_ddnet_srv origins='tw-0.7+udp://*' port=8305
 start_ddnet_srv origins='yellow' port=8306
 start_ddnet_srv origins='*' port=8307 config='sv_redirect_on_join tw-0.7+udp://127.0.0.1:8305'
-start_ddnet_insta_srv port=8308
-start_teeworlds_srv port=8309
+start_ddnet_srv origins='*' port=8308 config='sv_redirect_on_join tw-0.7+udp://127.0.0.1:8306'
+start_ddnet_insta_srv port=8309
+start_teeworlds_srv port=8310
 start_ddnet_remote_srv 192.168.178.27 origins='*' port=8303
 start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8304
 
