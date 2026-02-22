@@ -98,9 +98,30 @@ start_ddnet_insta_srv() {
 	exit 1
 }
 
+start_teeworlds_srv() {
+	local port="$1"
+	if [[ "$port" != port=* ]]; then
+		echo "wrong port"
+		exit 1
+	fi
+	port="$(printf '%s' "$port" | cut -d'=' -f2-)"
+
+	pushd ~/Desktop/git/teeworlds/build/ &> /dev/null
+	name="localhost:$port, teeworlds, origins: NULL"
+	if ./teeworlds_srv "sv_port $port;sv_name \"$name\"" &> "$LOG_DIR/teeworlds_${port}.log" & then
+		pids+=($!)
+		printf '[*] started teeworlds server on port %d\n' "$port"
+		popd &> /dev/null
+		return
+	fi
+	printf '[-] failed to start %s\n' "$name"
+	exit 1
+}
+
 start_ddnet_srv origins='*' port=8303
 start_ddnet_srv origins='192.168.178.78:*' port=8304
 start_ddnet_insta_srv port=8305
+start_teeworlds_srv port=8306
 start_ddnet_remote_srv 192.168.178.27 origins='*' port=8303
 start_ddnet_remote_srv 192.168.178.27 origins='129.*' port=8304
 
